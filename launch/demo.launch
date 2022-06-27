@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- *************************************************************************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <!-- **********Load the specified model into "Parameter Server" **************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <param name="robot_description" textfile="$(find pan_tilt)/urdf/pan_tilt.urdf"/>
+
+
+
+
+    <!-- *************************************************************************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <!-- ******************* We need joint_state_publisher to control the joints  ************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    
+    <!--  
+        As of early 2020, the GUI functionality has been split out of the main joint_state_publisher package 
+        into its own package called joint_state_publisher_gui. The old use_gui parameter to joint_state_publisher is 
+        still honored, but launches joint_state_publisher_gui if installed and available. For packages transitioning 
+        before this change, joint_state_publisher_gui should be added as an <exec_depend> to package.xml and launch files 
+        should be updated to launch joint_state_publisher_gui instead of using joint_state_publisher with use_gui parameter.
+        !!So we dont neeed to include joint_state_publisher because joint_state_publisher_gui include it inside..!!    --> 
+    <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen" />
+
+
+    <!-- *************************************************************************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <!-- *******  Combine joint values & We need robot_state_publisher to see all robot joints  ************ --> 
+    <!-- *************************************************************************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    
+    
+    <!-- *************************************************************************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <!-- *****  We run and load all the nodes but we haven't launch Rviz yet, here we do it below*********** --> 
+    <!-- *************************************************************************************************** --> 
+    <!-- *************************************************************************************************** --> 
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find pan_tilt)/rviz/rviz_configure.rviz" />
+
+    
+
+</launch>
